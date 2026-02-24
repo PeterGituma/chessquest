@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+  }
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  username  String   @unique
+  xp        Int      @default(0)
+  level     Int      @default(1)
+  createdAt DateTime @default(now())
+
+  skills    UserSkill[]
+  matches   Match[]
+}
+
+model UserSkill {
+  id          String @id @default(uuid())
+  user        User   @relation(fields: [userId], references: [id])
+  userId      String
+  skillName   String
+  mastery     Int    @default(0)
+}
+
+model Puzzle {
+  id          String @id @default(uuid())
+  fen         String
+  solution    String
+  difficulty  Int
+  concept     String
+}
+
+model Match {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  result    String
+  moves     String
+  createdAt DateTime @default(now())
+}
