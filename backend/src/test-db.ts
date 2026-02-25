@@ -1,7 +1,6 @@
-import pkg from "@prisma/client"; // default import
-const { PrismaClient } = pkg;  // extract PrismaClient class
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient(); // ✅ construct instance
+const prisma = new PrismaClient();
 
 async function main() {
   const user = await prisma.user.create({
@@ -15,7 +14,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => console.error(e))
+  .catch(console.error)
   .finally(async () => {
     await prisma.$disconnect();
   });

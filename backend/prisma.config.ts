@@ -1,13 +1,21 @@
-import "dotenv/config";
-import { defineConfig } from "prisma/config";
+import { PrismaClient } from "@prisma/client";
+import dotenv from "dotenv";
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL is not defined");
+dotenv.config();
+
+const prisma = new PrismaClient();
+
+async function main() {
+  const user = await prisma.user.create({
+    data: {
+      email: "test@chessquest.com",
+      username: "testuser",
+    },
+  });
+
+  console.log(user);
 }
 
-export default defineConfig({
-  schema: "prisma/schema.prisma",
-  datasource: {
-    url: process.env.DATABASE_URL,
-  },
-});
+main()
+  .catch(console.error)
+  .finally(async () => prisma.$disconnect());
